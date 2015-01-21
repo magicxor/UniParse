@@ -32,7 +32,13 @@ implementation
 uses Math, uMainWnd, System.Character;
 
 procedure TFormParsedText.FormResize(Sender: TObject);
+var
+  i: Integer;
 begin
+  for i := 0 to StringGridParsedText.ColCount-1 do
+  begin
+    StringGridParsedText.Cols[i].Clear;
+  end;
   StringGridParsedText.ColCount :=
     Floor((StringGridParsedText.Width - (GetSystemMetrics(SM_CXVSCROLL) * 3)) /
     StringGridParsedText.DefaultColWidth) - 1;
