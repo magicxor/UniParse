@@ -1,4 +1,4 @@
-unit uMainWnd;
+﻿unit uMainWnd;
 
 interface
 

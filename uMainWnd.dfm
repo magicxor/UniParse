@@ -33,7 +33,6 @@ object FormMain: TFormMain
     Font.Style = []
     ParentFont = False
     OnClick = LabelAboutClick
-    ExplicitTop = 199
     ExplicitWidth = 252
   end
   object MemoSrc: TMemo
@@ -44,8 +43,6 @@ object FormMain: TFormMain
     Height = 277
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 449
-    ExplicitHeight = 157
   end
   object ButtonParse: TButton
     Left = 0
@@ -56,7 +53,6 @@ object FormMain: TFormMain
     Caption = 'Parse'
     TabOrder = 1
     OnClick = ButtonParseClick
-    ExplicitTop = 328
   end
   object ButtonClear: TButton
     Left = 0
@@ -67,6 +63,5 @@ object FormMain: TFormMain
     Caption = 'Clear'
     TabOrder = 2
     OnClick = ButtonClearClick
-    ExplicitTop = 293
   end
 end
