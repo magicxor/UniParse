@@ -2,7 +2,7 @@
 
 This application can parse a string into individual characters
 
-### Donate / Пожертвования:
+### Пожертвования / Donate:
 
 [Яндекс.Деньги / Yandex.Money](https://money.yandex.ru/direct-payment.xml?_openstat=template%3Bmenu%3Bp2p): 410011882837351
 
