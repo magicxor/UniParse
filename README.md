@@ -6,4 +6,4 @@ This application can parse a string into individual characters
 
 [Яндекс.Деньги / Yandex.Money](https://money.yandex.ru/direct-payment.xml?_openstat=template%3Bmenu%3Bp2p): 410011882837351
 
-[КИВИ / QIWI](https://qiwi.ru/transfer/email.action): npravdin@gmail.com
+[КИВИ / QIWI](https://qiwi.ru/transfer/email.action): mailparser@mail.ru
