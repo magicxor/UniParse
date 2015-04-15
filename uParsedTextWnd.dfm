@@ -19,7 +19,7 @@ object FormParsedText: TFormParsedText
     Top = 0
     Height = 287
     Align = alRight
-    OnMoved = SplitterLRMoved
+    OnMoved = FormResize
     ExplicitLeft = 656
     ExplicitTop = 120
     ExplicitHeight = 100
@@ -40,7 +40,7 @@ object FormParsedText: TFormParsedText
     TabOrder = 0
     OnSelectCell = StringGridParsedTextSelectCell
   end
-  object MemoParsedText: TMemo
+  object MemoSymbolDescription: TMemo
     AlignWithMargins = True
     Left = 3
     Top = 290

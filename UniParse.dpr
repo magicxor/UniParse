@@ -1,4 +1,7 @@
-﻿program ProjectUniParse;
+﻿/// <summary>
+///   This application can parse a string into individual characters.
+/// </summary>
+program UniParse;
 
 uses
   Forms,

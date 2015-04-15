@@ -1,4 +1,7 @@
-﻿unit uMainWnd;
+﻿/// <summary>
+///   The main window. Displays an input box to ask the user to enter a string.
+/// </summary>
+unit uMainWnd;
 
 interface
 
@@ -22,6 +25,9 @@ type
   end;
 
 var
+  /// <summary>
+  ///   The main application form.
+  /// </summary>
   FormMain: TFormMain;
 
 implementation

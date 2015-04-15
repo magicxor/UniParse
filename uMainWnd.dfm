@@ -15,17 +15,17 @@ object FormMain: TFormMain
   TextHeight = 13
   object LabelAbout: TLabel
     AlignWithMargins = True
-    Left = 1
+    Left = 10
     Top = 358
-    Width = 529
+    Width = 511
     Height = 13
-    Margins.Left = 1
+    Margins.Left = 10
     Margins.Top = 5
-    Margins.Right = 1
+    Margins.Right = 10
     Margins.Bottom = 1
     Align = alBottom
     Alignment = taCenter
-    Caption = 'coded by: github.com/magicxor | mailparser@mail.ru'
+    Caption = 'github.com/magicxor | mailparser@mail.ru'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = 1973790
     Font.Height = -11
@@ -33,7 +33,7 @@ object FormMain: TFormMain
     Font.Style = []
     ParentFont = False
     OnClick = LabelAboutClick
-    ExplicitWidth = 252
+    ExplicitWidth = 201
   end
   object MemoSrc: TMemo
     AlignWithMargins = True
@@ -42,6 +42,7 @@ object FormMain: TFormMain
     Width = 525
     Height = 277
     Align = alClient
+    ScrollBars = ssVertical
     TabOrder = 0
   end
   object ButtonParse: TButton

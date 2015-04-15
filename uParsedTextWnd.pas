@@ -1,48 +1,78 @@
-﻿unit uParsedTextWnd;
+﻿/// <summary>
+/// Displays a parsed text and a description of each symbol.
+/// </summary>
+unit uParsedTextWnd;
 
 interface
 
 uses
-  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, Grids, Vcl.ExtCtrls;
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls,
+  Grids, Vcl.ExtCtrls;
 
 type
   TFormParsedText = class(TForm)
+    /// <summary>
+    ///   Displays a grid of symbols that contains in a source text.
+    /// </summary>
     StringGridParsedText: TStringGrid;
-    MemoParsedText: TMemo;
+    /// <summary>
+    ///   Displays an symbol description for any symbol in text.
+    /// </summary>
+    MemoSymbolDescription: TMemo;
+    /// <summary>
+    ///   Displays a line of symbols for each row of StringGridParsedText. <br />
+    /// </summary>
     StringGridSrcText: TStringGrid;
+    /// <summary>
+    ///   Left-right splitter.
+    /// </summary>
     SplitterLR: TSplitter;
+    /// <summary>
+    /// Regroup symbols on form resize.
+    /// </summary>
     procedure FormResize(Sender: TObject);
+    /// <summary>
+    /// Show symbol description on cell select.
+    /// </summary>
     procedure StringGridParsedTextSelectCell(Sender: TObject; ACol, ARow: Integer;
       var CanSelect: Boolean);
-    procedure SplitterLRMoved(Sender: TObject);
   private
     { Private declarations }
   public
+    /// <summary>
+    /// Set new string for parsing.
+    /// </summary>
     function SetTextToParse(textToParse: string): Boolean;
   end;
 
 var
+  /// <summary>
+  /// This form displays a parsed text and a description of each symbol. <br />
+  /// </summary>
   FormParsedText: TFormParsedText;
 
 implementation
 
 {$R *.dfm}
 
-uses Math, uMainWnd, System.Character;
+uses Math, uMainWnd, System.Character, System.RegularExpressions;
 
 procedure TFormParsedText.FormResize(Sender: TObject);
+// Regroup symbols in the grid
 var
   i: Integer;
 begin
-  for i := 0 to StringGridParsedText.ColCount-1 do
+  // Clear every column
+  for i := 0 to StringGridParsedText.ColCount - 1 do
   begin
     StringGridParsedText.Cols[i].Clear;
   end;
+  // Calculate an column count
   StringGridParsedText.ColCount :=
     Floor((StringGridParsedText.Width - (GetSystemMetrics(SM_CXVSCROLL) * 3)) /
     StringGridParsedText.DefaultColWidth) - 1;
   StringGridSrcText.DefaultColWidth := StringGridSrcText.Width - 5;
+  // Parse a text again
   FormMain.ButtonParseClick(Self);
 end;
 
@@ -50,32 +80,32 @@ function TFormParsedText.SetTextToParse(textToParse: string): Boolean;
 var
   i, cl, rw: Integer;
   GridRect: TGridRect;
-  CSel: Boolean;
+  CanSelect : Boolean;
 begin
   try
-    // Очищаем таблицу
+    // Clear tables
     StringGridParsedText.RowCount := 1;
     StringGridParsedText.Rows[0].Clear;
     StringGridSrcText.Rows[0].Clear;
-    // Заполняем
+    // Init
     cl := 0;
     rw := 0;
     GridRect.Left := 0;
     GridRect.Top := 0;
     GridRect.Right := 0;
     GridRect.Bottom := 0;
-    CSel := True;
-    //
+    CanSelect := True;
+    // Calculate an row count
     StringGridParsedText.RowCount := Ceil(textToParse.Length / StringGridParsedText.ColCount);
     StringGridSrcText.RowCount := StringGridParsedText.RowCount;
-    //
+    // Fill the table
     for i := low(textToParse) to high(textToParse) do
     begin
       StringGridParsedText.Cells[cl, rw] := textToParse[i];
-      // Тут можно было заменять все невидимые символы с помощью регэкспов, но мне лень:
-      StringGridSrcText.Cells[0, rw] := StringReplace(StringGridParsedText.Rows[rw].Text,
-        sLineBreak, ' ', [rfReplaceAll, rfIgnoreCase]);
-      //---
+      // Replace all line breaks by space character
+      StringGridSrcText.Cells[0, rw] := TRegEx.Replace(StringGridParsedText.Rows[rw].Text,
+        '(?s)(\R)', ' ', [roIgnoreCase, roMultiLine]);
+      // Loop control
       Inc(cl);
       if cl = StringGridParsedText.ColCount then
       begin
@@ -83,24 +113,22 @@ begin
         Inc(rw);
       end;
     end;
-    //
+
     StringGridParsedText.Selection := GridRect;
-    StringGridParsedTextSelectCell(Self, GridRect.Left, GridRect.Top, CSel);
-    //
+    StringGridParsedTextSelectCell(Self, GridRect.Left, GridRect.Top, CanSelect);
+
     Result := True;
   except
     Result := False;
   end;
 end;
 
-procedure TFormParsedText.SplitterLRMoved(Sender: TObject);
+/// <summary>
+/// Get a name of an unicode category.
+/// </summary>
+function GetUCategoryName(AUnicodeCategory: TUnicodeCategory): string;
 begin
-  FormResize(Self);
-end;
-
-function GetUniCatName(UniCat: TUnicodeCategory): string;
-begin
-  case UniCat of
+  case AUnicodeCategory of
     TUnicodeCategory.ucControl:
       Result := 'ucControl';
     TUnicodeCategory.ucFormat:
@@ -168,17 +196,18 @@ end;
 
 procedure TFormParsedText.StringGridParsedTextSelectCell(Sender: TObject; ACol, ARow: Integer;
   var CanSelect: Boolean);
+// Display new symbol description
 begin
-  MemoParsedText.Clear;
+  MemoSymbolDescription.Clear;
   if Length(StringGridParsedText.Cells[ACol, ARow]) > 0 then
   begin
-    MemoParsedText.Lines.Add(StringGridParsedText.Cells[ACol, ARow]);
-    MemoParsedText.Lines.Add('Unicode number (DEC): ' +
+    MemoSymbolDescription.Lines.Add(StringGridParsedText.Cells[ACol, ARow]);
+    MemoSymbolDescription.Lines.Add('Unicode number (DEC): ' +
       IntToStr(Ord(StringGridParsedText.Cells[ACol, ARow][1])));
-    MemoParsedText.Lines.Add('Unicode number (HEX): ' +
+    MemoSymbolDescription.Lines.Add('Unicode number (HEX): ' +
       IntToHex(Ord(StringGridParsedText.Cells[ACol, ARow][1]), 4));
-    MemoParsedText.Lines.Add('Unicode category: ' + GetUniCatName(StringGridParsedText.Cells[ACol,
-      ARow][1].GetUnicodeCategory));
+    MemoSymbolDescription.Lines.Add('Unicode category: ' +
+      GetUCategoryName(StringGridParsedText.Cells[ACol, ARow][1].GetUnicodeCategory));
   end;
 end;
 
