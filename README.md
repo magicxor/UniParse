@@ -17,9 +17,3 @@ In order to compile this sources on Windows, you need to install the Embarcadero
 ### License
 
 This software is released under the GPLv3 license. See LICENSE.md.
-
-### Donate
-
-[Яндекс.Деньги / Yandex.Money](https://money.yandex.ru/direct-payment.xml?_openstat=template%3Bmenu%3Bp2p): 410011882837351
-
-[КИВИ / QIWI](https://qiwi.ru/transfer/email.action): mailparser@mail.ru
